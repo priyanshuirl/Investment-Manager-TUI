@@ -66,7 +66,7 @@ public class Stock {
 
     public String toString() {
         return "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity + "\nPrice : " + price
-                + "\nBook Value : " + bookValue;
+                + "\nBook Value : " + bookValue + "\n";
     }
 
 }

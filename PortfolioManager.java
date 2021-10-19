@@ -9,6 +9,28 @@ public class PortfolioManager {
         return stocks;
     }
 
+    public Stock rangeStock(double upper, double lower) {
+        if (stocks != null) {
+            for (Stock stock : stocks) {
+                if (stock.getPrice() < upper && stock.getPrice() > lower) {
+                    return stock;
+                }
+            }
+        }
+        return null;
+    }
+
+    public MutualFund rangeMutalFund(double upper, double lower) {
+        if (mutualFunds != null) {
+            for (MutualFund mutualFund : mutualFunds) {
+                if (mutualFund.getPrice() < upper && mutualFund.getPrice() > lower) {
+                    return mutualFund;
+                }
+            }
+        }
+        return null;
+    }
+
     public Stock checkStock(String symbol) {
         if (stocks != null) {
             for (Stock stock : stocks) {

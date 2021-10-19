@@ -59,7 +59,7 @@ public class EPortfolio {
                         System.out.println(st.toString() + "\n");
                     }
                 }
-    
+
                 if (portfolio.getMutualFunds() != null) {
                     System.out.println("\nYour Mutual Fund Portfolio");
                     for (MutualFund mutualFund : portfolio.getMutualFunds()) {
@@ -88,7 +88,7 @@ public class EPortfolio {
                         System.out.println(s1t.toString() + "\n");
                     }
                 }
-    
+
                 if (portfolio.getMutualFunds() != null) {
                     System.out.println("\nYour Mutual Fund Portfolio");
                     for (MutualFund mutualFund : portfolio.getMutualFunds()) {
@@ -122,7 +122,7 @@ public class EPortfolio {
                         System.out.println(s2t.toString() + "\n");
                     }
                 }
-    
+
                 if (portfolio.getMutualFunds() != null) {
                     System.out.println("\nYour Mutual Fund Portfolio");
                     for (MutualFund mutualFund : portfolio.getMutualFunds()) {
@@ -140,7 +140,8 @@ public class EPortfolio {
                 }
                 if (portfolio.getMutualFunds() != null) {
                     for (MutualFund mutualFund : portfolio.getMutualFunds()) {
-                        double gainValue = ((mutualFund.getQuantity() * mutualFund.getPrice()) - 9.99) - mutualFund.getBookValue();
+                        double gainValue = ((mutualFund.getQuantity() * mutualFund.getPrice()) - 9.99)
+                                - mutualFund.getBookValue();
                         mgain = gainValue;
                     }
                 }
@@ -154,8 +155,13 @@ public class EPortfolio {
                 System.out.println("Enter the name/keyword you wish search for or leave blank and enter: ");
                 String temp2 = scan.nextLine();
 
+                System.out.println("Enter the Amount Under which you need to find Investments");
+                double upper = scan.nextDouble();
+                System.out.println("Enter the Amount Above which you need to find Investments");
+                double lower = scan.nextDouble();
+                System.out.println("\n\nStocks in range of " + lower + " to " + upper + " are");
+
                 if (temp1 == "\n" && temp2 == "\n") {
-                    System.out.println("\ncaSE-1");
                     System.out.println("\nYour Stock Portfolio");
                     for (Stock st1 : portfolio.getStocks()) {
                         System.out.println(st1.toString() + "\n");
@@ -164,30 +170,51 @@ public class EPortfolio {
                     for (MutualFund mutualFund : portfolio.getMutualFunds()) {
                         System.out.println(mutualFund.toString() + "\n");
                     }
-                }else if (temp1 == "\n") {
-                    System.out.println("\ncaSE-2");
+                } else if (temp1 == "\n") {
                     Stock st2 = portfolio.checkStock(temp2);
                     if (st2 != null) {
                         System.out.println(st2.toString() + "\n");
                     } else
                         System.out.println("No match found");
+                    MutualFund st7 = portfolio.checkMutalFund(temp2);
+                    if (st7 != null) {
+                        System.out.println(st7.toString() + "\n");
+                    } else
+                        System.out.println("No match found");
                 } else if (temp2 == "\n") {
-                    System.out.println("\ncaSE-3");
                     Stock st3 = portfolio.checkStock(temp1);
                     if (st3 != null) {
                         System.out.println(st3.toString() + "\n");
                     } else
                         System.out.println("No match found");
+                    MutualFund st8 = portfolio.checkMutalFund(temp1);
+                    if (st8 != null) {
+                        System.out.println(st8.toString() + "\n");
+                    } else
+                        System.out.println("No match found");
                 } else {
-                    System.out.println("\ncaSE-4");
                     Stock st4 = portfolio.checkStock(temp1);
-                    Stock st2 = portfolio.checkStock(temp2);
-                    if (st4 == st2) {
-                        System.out.println(st4.toString() + "\n");
-                    } else {
-                        System.out.println("The name and symbol entered do not seem to match");
+                    if (portfolio.getMutualFunds() != null && portfolio.getStocks() != null) {
+                        MutualFund st10 = portfolio.checkMutalFund(temp1);
+                        Stock st2 = portfolio.checkStock(temp2);
+                        MutualFund st11 = portfolio.checkMutalFund(temp2);
+                        if (st4 == st2) {
+                            System.out.println(st4.toString() + "\n");
+                        } else {
+                            System.out.println("The name and symbol entered do not seem to match");
+                        }
+                        if (st10 == st11) {
+                            System.out.println(st10.toString() + "\n");
+                        } else {
+                            System.out.println("The name and symbol entered do not seem to match");
+                        }
                     }
                 }
+                Stock st5 = portfolio.rangeStock(upper, lower);
+                System.out.println(st5.toString());
+                MutualFund st6 = portfolio.rangeMutalFund(upper, lower);
+                System.out.println(st6.toString());
+                System.out.println("\n\n");
                 break;
             case 6:
                 System.out.println("Have a Nice day!");

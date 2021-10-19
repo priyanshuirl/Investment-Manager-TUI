@@ -64,7 +64,7 @@ public class MutualFund {
 
     public String toString() {
         return "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity + "\nPrice : " + price
-                + "\nBook Value : " + bookValue;
+                + "\nBook Value : " + bookValue + "\n";
     }
 
 }
