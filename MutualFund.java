@@ -6,6 +6,7 @@ public class MutualFund {
     public double price;
     public double bookValue;
     public double oldPrice;
+    public int sellqty;
 
     public MutualFund(String symbol, String name, int quantity, double price) {
         this.symbol = symbol;
@@ -38,6 +39,10 @@ public class MutualFund {
         return bookValue;
     }
 
+    public int getSellQty() {
+        return sellqty;
+    }
+
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
@@ -60,6 +65,10 @@ public class MutualFund {
 
     public void setOldPrice(double oldPrice) {
         this.oldPrice = oldPrice;
+    }
+
+    public void sellqty(int sellqty) {
+        this.sellqty = sellqty;
     }
 
     public String toString() {

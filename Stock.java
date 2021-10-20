@@ -7,6 +7,7 @@ public class Stock {
     public double price;
     public double bookValue;
     private double oldPrice;
+    public int sellqty;
 
     public Stock(String symbol, String name, int quantity, double price, double bookValue) {
 
@@ -40,6 +41,10 @@ public class Stock {
         return price;
     }
 
+    public int getSellQty() {
+        return sellqty;
+    }
+
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
@@ -62,6 +67,10 @@ public class Stock {
 
     public void setOldPrice(double oldPrice) {
         this.oldPrice = oldPrice;
+    }
+
+    public void sellqty(int sellqty) {
+        this.sellqty = sellqty;
     }
 
     public String toString() {

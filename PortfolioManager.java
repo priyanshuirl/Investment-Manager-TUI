@@ -9,6 +9,19 @@ public class PortfolioManager {
         return stocks;
     }
 
+    public Stock checkStock(String symb) {
+        if (stocks != null) {
+            for (Stock stock : stocks) {
+                if (stock.getSymbol().equalsIgnoreCase(symb)) {
+                    return stock;
+                } else if (stock.getName().contains(symb)) {
+                    return stock;
+                }
+            }
+        }
+        return null;
+    }
+
     public Stock rangeStock(double upper, double lower) {
         if (stocks != null) {
             for (Stock stock : stocks) {
@@ -31,23 +44,10 @@ public class PortfolioManager {
         return null;
     }
 
-    public Stock checkStock(String symbol) {
-        if (stocks != null) {
-            for (Stock stock : stocks) {
-                if (stock.getSymbol().equalsIgnoreCase(symbol)) {
-                    return stock;
-                } else if (stock.getName().contains(symbol)) {
-                    return stock;
-                }
-            }
-        }
-        return null;
-    }
-
-    public MutualFund checkMutalFund(String symbol) {
+    public MutualFund checkMutalFund(String symb) {
         if (mutualFunds != null) {
             for (MutualFund mutualFund : mutualFunds) {
-                if (mutualFund.getSymbol().equalsIgnoreCase(symbol)) {
+                if (mutualFund.getSymbol().equalsIgnoreCase(symb)) {
                     return mutualFund;
                 }
             }
@@ -55,22 +55,22 @@ public class PortfolioManager {
         return null;
     }
 
-    public void setMutualFunds(ArrayList<MutualFund> mutualFunds) {
-        this.mutualFunds = mutualFunds;
+    public void setMutualFunds(ArrayList<MutualFund> mf) {
+        this.mutualFunds = mf;
     }
 
-    public void addMutualFund(MutualFund mutualFund) {
+    public void addMutualFund(MutualFund mFund) {
         if (mutualFunds == null) {
             mutualFunds = new ArrayList<>();
         }
-        mutualFunds.add(mutualFund);
+        mutualFunds.add(mFund);
     }
 
-    public void addStocks(Stock st) {
+    public void addStocks(Stock stock) {
         if (stocks == null) {
             stocks = new ArrayList<>();
         }
-        stocks.add(st);
+        stocks.add(stock);
     }
 
     public ArrayList<MutualFund> getMutualFunds() {
