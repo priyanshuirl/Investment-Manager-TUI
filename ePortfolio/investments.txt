@@ -1,2 +1,1 @@
-stock AAPL apple 1000 45.0 45009.99 
-mutualfund SSTEX somename 5678 45.0 255510.0 
+stock AAPL apple 77 6000.0 385006.05692913383 
