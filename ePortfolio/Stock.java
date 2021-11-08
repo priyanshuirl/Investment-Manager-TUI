@@ -1,4 +1,3 @@
-
 public class Stock {
 
     public String symbol;

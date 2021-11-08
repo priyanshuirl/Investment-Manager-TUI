@@ -1,4 +1,3 @@
-
 /**
  * ================================= ePortfolio ======================================================
  * 
@@ -16,7 +15,7 @@
  * <ul>
  * <p> 
  * 
- * @author    Arshia Sandhu (Student ID: 1125681)
+ * @author    Priyanshu Mishra
  * 
  */
 
@@ -81,7 +80,7 @@ public class EPortfolio {
                 }
                 if (portfolio.getStocks() != null) { // prints stocks
                     for (Stock stockk : portfolio.getStocks()) {
-                        System.out.println("Stock Share");
+                        System.out.println("\nStock Share");
                         System.out.println(stockk.toString() + "\n");
                     }
                 }
@@ -113,7 +112,7 @@ public class EPortfolio {
 
                 if (portfolio.getStocks() != null) { // prints stocks
                     for (Stock s1t : portfolio.getStocks()) {
-                        System.out.println("Stock Share");
+                        System.out.println("\nStock Share");
                         System.out.println(s1t.toString() + "\n");
                     }
                 }
@@ -192,74 +191,69 @@ public class EPortfolio {
 
             // search
             case 5:
+                System.out.println("Do you wanna search using prince range? (Enter 1 for yes 2 for No)"); // price range
+                int option = scan.nextInt();
+                if (option == 1) {
 
-                System.out.println("Enter the symbol you wish to search for or press enter to leave blank");
-                String searchSym = scan.nextLine();
+                    System.out.println("Enter the Amount Above which you need to find Investments");
+                    double lower = scan.nextDouble();
 
-                System.out.println("Enter the name/keyword you wish search for or press enter to leave blank");
-                String searchkey = scan.nextLine();
+                    System.out.println("Enter the Amount Under which you need to find Investments");
+                    double upper = scan.nextDouble();
 
-                System.out.println("Enter the Amount Under which you need to find Investments");
-                double upper = scan.nextDouble();
-
-                System.out.println("Enter the Amount Above which you need to find Investments");
-                double lower = scan.nextDouble();
-                if (searchkey == "\n") { // searching for symbol
-                    Stock stock3 = portfolio.checkStock(searchSym);
-                    if (stock3 != null) {
-                        System.out.println(stock3.toString() + "\n");
-                    } else
-                        System.out.println("No match found");
-                    MutualFund stock8 = portfolio.checkMutalFund(searchSym);
-                    if (stock8 != null) {
-                        System.out.println(stock8.toString() + "\n");
-                    } else
-                        System.out.println("No match found");
+                    Stock stock5 = portfolio.rangeStock(upper, lower); // finding using price range
+                    if (stock5 != null) {
+                        System.out.println("\n\nStocks in the range of " + lower + " to " + upper + " are");
+                        System.out.println(stock5.toString());
+                    }
+                    MutualFund stock6 = portfolio.rangeMutalFund(upper, lower);
+                    if (stock6 != null) {
+                        System.out.println("\n\nMutual Funds in the range of " + lower + " to " + upper + " are");
+                        System.out.println(stock6.toString());
+                    }
+                    System.out.println("\n\n");
                 }
 
-                else if (searchSym == "\n") { // searching for key
-                    Stock stock2 = portfolio.checkStock(searchkey);
-                    if (stock2 != null) {
-                        System.out.println(stock2.toString() + "\n");
-                    } else
-                        System.out.println("No match found");
-                    MutualFund stock7 = portfolio.checkMutalFund(searchkey);
-                    if (stock7 != null) {
-                        System.out.println(stock7.toString() + "\n");
-                    } else
-                        System.out.println("No match found");
-                }
+                System.out.println("Do you wanna search using symbol? (Enter 1 for yes 2 for No)"); // using symbol
+                int option2 = scan.nextInt();
+                if (option2 == 1) {
 
-                else if (searchSym == "\n" && searchkey == "\n") {
-                    if (portfolio.getMutualFunds() != null && portfolio.getStocks() != null) {
-                        Stock stock4 = portfolio.checkStock(searchSym); // searching for symbol and key
-                        MutualFund stock10 = portfolio.checkMutalFund(searchSym);
-                        Stock stock2 = portfolio.checkStock(searchkey);
-                        MutualFund stock11 = portfolio.checkMutalFund(searchkey);
-                        if (stock4 == stock2) {
-                            System.out.println(stock4.toString() + "\n");
-                        } else {
-                            System.out.println("The name and symbol entered do not seem to match");
-                        }
-                        if (stock10 == stock11 && stock10 != null) {
-                            System.out.println(stock10.toString() + "\n");
-                        } else {
-                            System.out.println("The name and symbol entered do not seem to match");
-                        }
+                    System.out.println("Enter the symbol you wish to search for or press enter to leave blank");
+                    scan.skip("\\R?");
+                    String searchSym = scan.nextLine();
+
+                    Stock stock1 = portfolio.checkStock(searchSym);
+                    if (stock1 != null) {
+                        System.out.println("Here is your Stock:");
+                        System.out.println(stock1.toString() + "\n");
+                    }
+                    MutualFund mf1 = portfolio.checkMutalFund(searchSym);
+                    if (mf1 != null) {
+                        System.out.println("Here is your Mutual Fund:");
+                        System.out.println(mf1.toString() + "\n");
                     }
                 }
 
-                Stock stock5 = portfolio.rangeStock(upper, lower); // finding using price range
-                if (stock5 != null) {
-                    System.out.println("\n\nStocks in the range of " + lower + " to " + upper + " are");
-                    System.out.println(stock5.toString());
+                System.out.println("Do you wanna search using name? (Enter 1 for yes 2 for No)"); // using symbol
+                int option3 = scan.nextInt();
+                if (option3 == 1) {
+
+                    System.out.println("Enter the name/keyword you wish search for or press enter to leave blank");
+                    scan.skip("\\R?");
+                    String searchkey = scan.nextLine();
+
+                    Stock stock2 = portfolio.checkStock(searchkey);
+                    if (stock2 != null) {
+                        System.out.println("Here is your Stock:");
+                        System.out.println(stock2.toString() + "\n");
+                    }
+                    MutualFund mf2 = portfolio.checkMutalFund(searchkey);
+                    if (mf2 != null) {
+                        System.out.println("Here is your Mutual Fund:");
+                        System.out.println(mf2.toString() + "\n");
+                    }
                 }
-                MutualFund stock6 = portfolio.rangeMutalFund(upper, lower);
-                if (stock6 != null) {
-                    System.out.println("\n\nMutual Funds in the range of " + lower + " to " + upper + " are");
-                    System.out.println(stock6.toString());
-                }
-                System.out.println("\n\n");
+
                 break;
 
             // quitting program
@@ -275,7 +269,15 @@ public class EPortfolio {
             }
 
         }
+
     }
+
+    /**
+     * Adds Stock
+     * 
+     * @param stock, Stock
+     * 
+     */
 
     private static void addstock(Stock stock) {
         System.out.print("Enter quantity of the Stocks\n");
@@ -292,6 +294,11 @@ public class EPortfolio {
         System.out.println("Added " + squantity + " Stocks at " + price + " per stock");
     }
 
+    /**
+     * Adds Mutual Fund
+     * 
+     * @param mutualFund, mutual fund
+     */
     private static void addMutualFunds(MutualFund mutualFund) {
         System.out.print("Enter quantity of the Mutual Funds\n");
         int mfquantity = scan.nextInt();
@@ -307,6 +314,12 @@ public class EPortfolio {
 
         System.out.println("Added " + mfquantity + " Mutual Fund units at " + price + " per unit");
     }
+
+    /**
+     * Buys stock and adds more quantity to an existing investment.
+     * 
+     * @param symbol
+     */
 
     private static void buyStock(String symbol) {
         System.out.print("Enter name of the Stock\n");
@@ -329,6 +342,12 @@ public class EPortfolio {
         portfolio.addStocks(stockk);
     }
 
+    /**
+     * Buys mutual fund and adds more quantity to an existing investment.
+     * 
+     * @param symbol
+     */
+
     private static void buyMutualFund(String symbol) {
         System.out.print("Enter Name of the Mutual Fund\n");
         String name = scan.nextLine();
@@ -341,6 +360,12 @@ public class EPortfolio {
         portfolio.addMutualFund(mutualFund);
 
     }
+
+    /**
+     * Sells stock and reduces quantity
+     * 
+     * @param stockk
+     */
 
     private static void sellStock(Stock stockk) {
         stockk.setOldPrice(stockk.getPrice());
@@ -364,6 +389,12 @@ public class EPortfolio {
             System.out.println("You don't have enough stocks to sell in your Portfolio!");
         }
     }
+
+    /**
+     * Sells mutual fund and reduces quantity
+     * 
+     * @param mutualFund
+     */
 
     private static void sellMutualFund(MutualFund mutualFund) {
         System.out.println("Enter Price for which you wanna sell the Mutual Funds\n");
