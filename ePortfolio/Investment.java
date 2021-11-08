@@ -77,7 +77,7 @@ public class Investment {
     }
 
     public String toString() {
-        return "\nType : " + type + "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity
+        return "Type : " + type + "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity
                 + "\nPrice : " + price + "\nBook Value : " + bookValue + "\n";
     }
 

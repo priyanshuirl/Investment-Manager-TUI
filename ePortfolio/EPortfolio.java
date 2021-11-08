@@ -20,11 +20,21 @@
  * 
  */
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EPortfolio {
     private static PortfolioManager portfolio;
     private static Scanner scan;
+
+    static String line;
 
     public static void main(String[] args) {
         scan = new Scanner(System.in);
@@ -40,8 +50,10 @@ public class EPortfolio {
             System.out.println(
                     "(4) Get Gain: compute the total gain of the portfolio by accumulating the gains of all individual investments. ");
             System.out.println(
-                    "(5) Search: find all investments that match a search request and display all attributes of these investments ");
-            System.out.println("(6) Quit");
+                    "(5) Search: find all investments that match a search request and display all attributes of these investments. ");
+            System.out.println("(6) Load data from a File.");
+            System.out.println("(7) Save data to the File.");
+            System.out.println("(8) Quit");
             System.out.println("\nPlease Enter the Number corresponding to your choice : ");
             int choice = scan.nextInt();
             scan.nextLine();
@@ -245,8 +257,42 @@ public class EPortfolio {
 
                 break;
 
-            // quitting program
             case 6:
+                System.out.print("Enter the Name of the File you want to Load Data from: ");
+                String fname = scan.nextLine();
+                System.out.print("\nLoading Data from " + fname + "...\n\n");
+                try {
+                    BufferedReader input = new BufferedReader(new FileReader(fname));
+                    while ((line = input.readLine()) != null) {
+                        // add data from file
+                        System.out.println(line);
+                    }
+                    input.close();
+                    System.out.println("\nData loaded from file " + fname + " Successfully.\n");
+                } catch (IOException e) {
+                    System.out.println("\nSomething Went Wrong, Could Not open the file " + fname
+                            + ", Please recheck the Name of the file you entered and make sure it exists.\n");
+                }
+                break;
+
+            case 7:
+                System.out.println("\nSaving into investments.txt Output File...\n");
+                File investmentrecord = new File("investments.txt");
+                try {
+                    FileWriter fw = new FileWriter(investmentrecord);
+                    Writer output = new BufferedWriter(fw);
+                    for (Investment investmentitem : portfolio.getInvestments()) {
+                        output.write(investmentitem.toString());
+                    }
+                    output.close();
+                    System.out.println("File Saved Successfully!\n");
+                } catch (IOException e) {
+                    System.out.println("\nSomething Went Wrong, Cannot Open File.\n");
+                }
+                break;
+
+            // quitting program
+            case 8:
                 System.out.println("Have a Nice day!");
                 iteration = 0;
                 break;
