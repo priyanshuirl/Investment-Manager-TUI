@@ -36,12 +36,6 @@ public class PortfolioManager {
         if (investments == null) {
             investments = new ArrayList<>();
         }
-        if (investment.type.equals("stock") && investment.symbol != investment.symbol) {
-            investments.add(investment);
-        } else if (investment.type.equals("mutualfund") && investment.symbol != investment.symbol) {
-            investments.add(investment);
-        } else {
-            System.out.println("\nAn Investment with the Same Symbol Exists. Please Try Again\n");
-        }
+        investments.add(investment);
     }
 }

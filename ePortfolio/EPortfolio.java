@@ -59,9 +59,9 @@ public class EPortfolio {
                     System.out.println("\nEnter the Symbol for the Stock You wish to Buy");
                     scan.skip("\\R?");
                     String name = scan.nextLine();
-                    Investment isym = portfolio.checkInvestment(name); // to check if stock already exists
-                    if (isym != null) {
-                        addstock(isym); // to manipulate quantity
+                    Investment symbol = portfolio.checkInvestment(name); // to check if stock already exists
+                    if (symbol != null) {
+                        addstock(symbol); // to manipulate quantity
                     } else {
                         buyStock(name); // to buy stock
                     }
@@ -70,9 +70,9 @@ public class EPortfolio {
                     System.out.println("\nEnter the Symbol for the Mutual Fund You wish to Buy");
                     scan.skip("\\R?");
                     String name = scan.nextLine();
-                    Investment iisym = portfolio.checkInvestment(name); // to check if mutual fund already exits
-                    if (iisym != null) {
-                        addMutualFunds(iisym); // to manupilate quantity
+                    Investment symbol = portfolio.checkInvestment(name); // to check if mutual fund already exits
+                    if (symbol != null) {
+                        addMutualFunds(symbol); // to manupilate quantity
                     } else {
                         buyMutualFund(name); // to buy new mutual fund
                     }
@@ -80,16 +80,20 @@ public class EPortfolio {
                     System.out.println("Please enter 1 or 2");
                 }
                 if (portfolio.getInvestments() != null) { // prints stocks
-                    for (Investment investment : portfolio.getInvestments()) {
-                        System.out.println("\nStock Share");
-                        System.out.println(investment.toString() + "\n");
+                    for (Investment stock : portfolio.getInvestments()) {
+                        if (stock.getType().equals("stock")) {
+                            System.out.println("Stock Shares");
+                            System.out.println(stock.toString() + "\n");
+                        }
                     }
                 }
 
                 if (portfolio.getInvestments() != null) { // prints mutual funds
-                    for (Investment investment : portfolio.getInvestments()) {
-                        System.out.println("\nMutual Fund Share");
-                        System.out.println(investment.toString() + "\n");
+                    for (Investment mutualFund : portfolio.getInvestments()) {
+                        if (mutualFund.getType().equals("mutualfund")) {
+                            System.out.println("Mutual Fund Shares");
+                            System.out.println(mutualFund.toString() + "\n");
+                        }
                     }
                 }
                 break;
@@ -114,36 +118,30 @@ public class EPortfolio {
 
             // updates
             case 3:
-                if (portfolio.getInvestments() != null) { // if stocks exist
-                    for (Investment stock : portfolio.getInvestments()) {
-                        System.out.println(stock.toString());
-                        System.out.println("Enter the updated price for the current Stock.\n");
+                if (portfolio.getInvestments() != null) { // if investment exist
+                    for (Investment investmentupdate : portfolio.getInvestments()) {
+                        System.out.println(investmentupdate.toString());
+                        System.out.println("Enter the updated price : \n");
                         double price = scan.nextDouble();
-                        stock.setOldPrice(stock.getPrice());
-                        stock.setPrice(price);
-                    }
-                }
-
-                if (portfolio.getInvestments() != null) { // if mutal funds exist
-                    for (Investment mutualFund : portfolio.getInvestments()) {
-                        System.out.println(mutualFund.toString());
-                        System.out.println("Enter the updated price for the current Stock.\n");
-                        double price = scan.nextDouble();
-                        mutualFund.setOldPrice(mutualFund.getPrice());
-                        mutualFund.setPrice(price);
+                        investmentupdate.setOldPrice(investmentupdate.getPrice());
+                        investmentupdate.setPrice(price);
                     }
                 }
                 if (portfolio.getInvestments() != null) { // prints stocks
-                    for (Investment s2t : portfolio.getInvestments()) {
-                        System.out.println("Stock Share");
-                        System.out.println(s2t.toString() + "\n");
+                    for (Investment stock : portfolio.getInvestments()) {
+                        if (stock.getType().equals("stock")) {
+                            System.out.println("\nStock Shares");
+                            System.out.println(stock.toString() + "\n");
+                        }
                     }
                 }
 
                 if (portfolio.getInvestments() != null) { // prints mutual funds
                     for (Investment mutualFund : portfolio.getInvestments()) {
-                        System.out.println("Mutual Fund Share");
-                        System.out.println(mutualFund.toString() + "\n");
+                        if (mutualFund.getType().equals("mutualfund")) {
+                            System.out.println("Mutual Fund Shares");
+                            System.out.println(mutualFund.toString() + "\n");
+                        }
                     }
                 }
                 break;
@@ -153,22 +151,26 @@ public class EPortfolio {
                 double sgain, mgain, tgain, gainstock = 0, gainmf = 0;
                 if (portfolio.getInvestments() != null) {
                     for (Investment stock : portfolio.getInvestments()) {
-                        int sellqnt = stock.getSellQty();
-                        double sellpricee = stock.getPrice();
-                        double oldbookval = stock.getOldPrice() * (stock.getQuantity() + stock.getSellQty()) + 9.99;
-                        int oldqnt = stock.getQuantity() + stock.getSellQty();
-                        gainstock = (sellqnt * sellpricee - 9.99) - oldbookval * (sellqnt / oldqnt);
+                        if (stock.getType().equals("stock")) {
+                            int sellqnt = stock.getSellQty();
+                            double sellpricee = stock.getPrice();
+                            double oldbookval = stock.getOldPrice() * (stock.getQuantity() + stock.getSellQty()) + 9.99;
+                            int oldqnt = stock.getQuantity() + stock.getSellQty();
+                            gainstock = (sellqnt * sellpricee - 9.99) - oldbookval * (sellqnt / oldqnt);
+                        }
                     }
                 }
                 sgain = gainstock;
                 if (portfolio.getInvestments() != null) {
                     for (Investment mutualFund : portfolio.getInvestments()) {
-                        int sellqnt = mutualFund.getSellQty();
-                        double sellpricee = mutualFund.getPrice();
-                        double oldbookval = mutualFund.getOldPrice()
-                                * (mutualFund.getQuantity() + mutualFund.getSellQty());
-                        int oldqnt = mutualFund.getQuantity() + mutualFund.getSellQty();
-                        gainmf = (sellqnt * sellpricee) - oldbookval * (sellqnt / oldqnt);
+                        if (mutualFund.getType().equals("mutualfund")) {
+                            int sellqnt = mutualFund.getSellQty();
+                            double sellpricee = mutualFund.getPrice();
+                            double oldbookval = mutualFund.getOldPrice()
+                                    * (mutualFund.getQuantity() + mutualFund.getSellQty());
+                            int oldqnt = mutualFund.getQuantity() + mutualFund.getSellQty();
+                            gainmf = (sellqnt * sellpricee) - oldbookval * (sellqnt / oldqnt);
+                        }
                     }
                 }
                 mgain = gainmf;
@@ -189,12 +191,12 @@ public class EPortfolio {
                     double upper = scan.nextDouble();
 
                     Investment stock = portfolio.rangeInvestment(upper, lower); // finding using price range
-                    if (stock != null) {
+                    if (stock != null && stock.getType().equals("stock")) {
                         System.out.println("\n\nStocks in the range of " + lower + " to " + upper + " are");
                         System.out.println(stock.toString());
                     }
                     Investment mutualfund = portfolio.rangeInvestment(upper, lower);
-                    if (mutualfund != null) {
+                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
                         System.out.println("\n\nMutual Funds in the range of " + lower + " to " + upper + " are");
                         System.out.println(mutualfund.toString());
                     }
@@ -210,12 +212,12 @@ public class EPortfolio {
                     String searchSym = scan.nextLine();
 
                     Investment stock = portfolio.checkInvestment(searchSym);
-                    if (stock != null) {
+                    if (stock != null && stock.getType().equals("stock")) {
                         System.out.println("Here is your Stock:");
                         System.out.println(stock.toString() + "\n");
                     }
                     Investment mutualfund = portfolio.checkInvestment(searchSym);
-                    if (mutualfund != null) {
+                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
                         System.out.println("Here is your Mutual Fund:");
                         System.out.println(mutualfund.toString() + "\n");
                     }
@@ -230,12 +232,12 @@ public class EPortfolio {
                     String searchkey = scan.nextLine();
 
                     Investment stock = portfolio.checkInvestment(searchkey);
-                    if (stock != null) {
+                    if (stock != null && stock.getType().equals("stock")) {
                         System.out.println("Here is your Stock:");
                         System.out.println(stock.toString() + "\n");
                     }
                     Investment mutualfund = portfolio.checkInvestment(searchkey);
-                    if (mutualfund != null) {
+                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
                         System.out.println("Here is your Mutual Fund:");
                         System.out.println(mutualfund.toString() + "\n");
                     }
@@ -318,7 +320,7 @@ public class EPortfolio {
         System.out.print("Enter price of each stock\n");
         double price = scan.nextDouble();
 
-        Stock stockk = new Stock(symbol, name, qnt, price, 9.99);
+        Stock stockk = new Stock(symbol, name, qnt, price, "stock");
         stockk.symbol = symbol;
         stockk.name = name;
         stockk.quantity = qnt;
@@ -342,10 +344,9 @@ public class EPortfolio {
         int qnt = scan.nextInt();
         System.out.print("Enter price of each Unit of Mutual Fund\n");
         double price = scan.nextDouble();
-        MutualFund mutualFund = new MutualFund(symbol, name, qnt, price);
+        MutualFund mutualFund = new MutualFund(symbol, name, qnt, price, "mutualfund");
         mutualFund.setBookValue(price * qnt);
         portfolio.addInvestments(mutualFund);
-
     }
 
     /**
