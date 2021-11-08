@@ -6,12 +6,14 @@ public class Investment {
     public double bookValue;
     private double oldPrice;
     public int sellqty;
+    public String type;
 
-    public Investment(String symbol, String name, int quantity, double price) {
+    public Investment(String symbol, String name, int quantity, double price, String type) {
         this.symbol = symbol;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.type = type;
     }
 
     public String getSymbol() {
@@ -71,8 +73,8 @@ public class Investment {
     }
 
     public String toString() {
-        return "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity + "\nPrice : " + price
-                + "\nBook Value : " + bookValue + "\n";
+        return "\nType : " + type + "\nSymbol : " + symbol + "\nName : " + name + "\nQuantity : " + quantity
+                + "\nPrice : " + price + "\nBook Value : " + bookValue + "\n";
     }
 
     public void add(Investment investment) {
