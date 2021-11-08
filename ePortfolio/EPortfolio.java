@@ -32,6 +32,7 @@ import java.util.Scanner;
 
 public class EPortfolio {
     private static PortfolioManager portfolio;
+    static ArrayList<String> Investmentsrecords = new ArrayList<>();
     private static Scanner scan;
 
     static String line;
@@ -265,7 +266,28 @@ public class EPortfolio {
                     BufferedReader input = new BufferedReader(new FileReader(fname));
                     while ((line = input.readLine()) != null) {
                         // add data from file
-                        System.out.println(line);
+                        Investmentsrecords.add(line);
+                    }
+                    for (int i = 0; i < Investmentsrecords.size(); i++) {
+                        String st = Investmentsrecords.get(i);
+                        String[] data = st.split(" ");
+                        if (data[0].equals("stock")) {
+                            Stock stockk = new Stock(data[1], data[2], Integer.parseInt(data[3]),
+                                    Double.parseDouble(data[4]), "stock");
+                            stockk.symbol = data[1];
+                            stockk.name = data[2];
+                            stockk.quantity = Integer.parseInt(data[3]);
+                            stockk.price = Double.parseDouble(data[4]);
+                            double bv = Double.parseDouble(data[4]) * Integer.parseInt(data[3]) + 9.99;
+                            stockk.setBookValue((Double.parseDouble(data[4]) * Integer.parseInt(data[3])) + 9.99);
+                            stockk.bookValue = bv;
+                            portfolio.addInvestments(stockk);
+                        } else if (data[0].equals("stock")) {
+                            MutualFund mutualFund = new MutualFund(data[1], data[2], Integer.parseInt(data[3]),
+                                    Double.parseDouble(data[4]), "mutualfund");
+                            mutualFund.setBookValue(Double.parseDouble(data[4]) * Integer.parseInt(data[3]));
+                            portfolio.addInvestments(mutualFund);
+                        }
                     }
                     input.close();
                     System.out.println("\nData loaded from file " + fname + " Successfully.\n");
@@ -281,8 +303,8 @@ public class EPortfolio {
                 try {
                     FileWriter fw = new FileWriter(investmentrecord);
                     Writer output = new BufferedWriter(fw);
-                    for (Investment investmentitem : portfolio.getInvestments()) {
-                        output.write(investmentitem.toString());
+                    for (int i = 0; i < portfolio.getInvestments().size(); i++) {
+                        output.write(portfolio.getInvestments().get(i).toFileString() + "\n");
                     }
                     output.close();
                     System.out.println("File Saved Successfully!\n");

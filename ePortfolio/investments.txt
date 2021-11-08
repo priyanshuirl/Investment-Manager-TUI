@@ -1,6 +1,2 @@
-Type : stock
-Symbol : AAPL
-Name : apple
-Quantity : 1234
-Price : 34.0
-Book Value : 41965.99
+stock AAPL apple 1000 45.0 45009.99 
+mutualfund SSTEX somename 5678 45.0 255510.0 

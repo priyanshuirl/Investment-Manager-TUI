@@ -81,6 +81,9 @@ public class Investment {
                 + "\nPrice : " + price + "\nBook Value : " + bookValue + "\n";
     }
 
+    public String toFileString() {
+        return type + " " + symbol + " " + name + " " + quantity + " " + price + " " + bookValue + " ";
+    }
     public void add(Investment investment) {
     }
 }
