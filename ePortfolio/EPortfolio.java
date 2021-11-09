@@ -13,6 +13,9 @@
  * <li> (3) update and refresh the prices of all the existing investments.
  * <li> (4) calculate the total gain of their portfolio by accumulating all individual investments.
  * <li> (5) search of investments that match the search query. 
+ * <li> (6) Load data from a File.
+ * <li> (7) Save data to the File.
+ * <li> (8) Display all Your Investments.
  * <ul>
  * <p> 
  * 
