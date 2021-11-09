@@ -28,13 +28,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EPortfolio {
     private static PortfolioManager portfolio;
     static ArrayList<String> Investmentsrecords = new ArrayList<>();
+    static HashMap<String, String> index = new HashMap<String, String>(50);
     private static Scanner scan;
-
     static String line;
 
     public static void main(String[] args) {
@@ -116,21 +120,24 @@ public class EPortfolio {
             case 2:
                 System.out.println("Enter The symbol for the investment you wish to sell: ");
                 String symbol = scan.nextLine();
-
-                for (Investment investment : portfolio.getInvestments()) {
-                    if (investment.getType().equals("mutualfund")) {
-                        investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
-                        if (investment != null) {
-                            sellMutualFund(investment);
-                        }
-                    } else if (investment.getType().equals("stock")) {
-                        investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
-                        if (investment != null) {
-                            sellStock(investment); // sell stock using symbol
-                        } else {
-                            System.out.println("\nUh oh! There is no such investment in your Portfolio.\n");
+                if (portfolio.getInvestments() != null) {
+                    for (Investment investment : portfolio.getInvestments()) {
+                        if (investment.getType().equals("mutualfund")) {
+                            investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
+                            if (investment != null) {
+                                sellMutualFund(investment);
+                            }
+                        } else if (investment.getType().equals("stock")) {
+                            investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
+                            if (investment != null) {
+                                sellStock(investment); // sell stock using symbol
+                            } else {
+                                System.out.println("\nUh oh! There is no such investment in your Portfolio.\n");
+                            }
                         }
                     }
+                } else {
+                    System.out.println("Data not found.");
                 }
                 break;
 
@@ -211,67 +218,137 @@ public class EPortfolio {
 
             // search
             case 5:
-                System.out.println("Do you wanna search using prince range? (Enter 1 for yes 2 for No)"); // price range
-                int option = scan.nextInt();
-                if (option == 1) {
+                System.out.println("\n\nDo you wanna Search Using Sequential Search or Hash Maps ?");
+                System.out.println("\nEnter 1 for Sequential Search and 2 for Hash Map search");
+                int optionch = scan.nextInt();
+                if (optionch == 1) {
+                    System.out.println("Do you wanna search using prince range? (Enter 1 for yes 2 for No)"); // price
+                                                                                                              // range
+                    int option = scan.nextInt();
+                    if (option == 1) {
 
-                    System.out.println("Enter the Amount Above which you need to find Investments");
-                    double lower = scan.nextDouble();
+                        System.out.println("Enter the Amount Above which you need to find Investments");
+                        double lower = scan.nextDouble();
 
-                    System.out.println("Enter the Amount Under which you need to find Investments");
-                    double upper = scan.nextDouble();
+                        System.out.println("Enter the Amount Under which you need to find Investments");
+                        double upper = scan.nextDouble();
 
-                    Investment stock = portfolio.rangeInvestment(upper, lower); // finding using price range
-                    if (stock != null && stock.getType().equals("stock")) {
-                        System.out.println("\n\nStocks in the range of " + lower + " to " + upper + " are");
-                        System.out.println(stock.toString());
+                        Investment stock = portfolio.rangeInvestment(upper, lower); // finding using price range
+                        if (stock != null && stock.getType().equals("stock")) {
+                            System.out.println("\n\nStocks in the range of " + lower + " to " + upper + " are");
+                            System.out.println(stock.toString());
+                        }
+                        Investment mutualfund = portfolio.rangeInvestment(upper, lower);
+                        if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
+                            System.out.println("\n\nMutual Funds in the range of " + lower + " to " + upper + " are");
+                            System.out.println(mutualfund.toString());
+                        }
+                        System.out.println("\n\n");
                     }
-                    Investment mutualfund = portfolio.rangeInvestment(upper, lower);
-                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
-                        System.out.println("\n\nMutual Funds in the range of " + lower + " to " + upper + " are");
-                        System.out.println(mutualfund.toString());
+
+                    System.out.println("Do you wanna search using symbol? (Enter 1 for yes 2 for No)"); // using symbol
+                    int option2 = scan.nextInt();
+                    if (option2 == 1) {
+
+                        System.out.println("Enter the symbol you wish to search for or press enter to leave blank");
+                        scan.skip("\\R?");
+                        String searchSym = scan.nextLine();
+
+                        Investment stock = portfolio.checkInvestment(searchSym);
+                        if (stock != null && stock.getType().equals("stock")) {
+                            System.out.println("Here is your Stock:");
+                            System.out.println(stock.toString() + "\n");
+                        }
+                        Investment mutualfund = portfolio.checkInvestment(searchSym);
+                        if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
+                            System.out.println("Here is your Mutual Fund:");
+                            System.out.println(mutualfund.toString() + "\n");
+                        }
                     }
-                    System.out.println("\n\n");
-                }
 
-                System.out.println("Do you wanna search using symbol? (Enter 1 for yes 2 for No)"); // using symbol
-                int option2 = scan.nextInt();
-                if (option2 == 1) {
+                    System.out.println("Do you wanna search using name? (Enter 1 for yes 2 for No)"); // using symbol
+                    int option3 = scan.nextInt();
+                    if (option3 == 1) {
 
-                    System.out.println("Enter the symbol you wish to search for or press enter to leave blank");
+                        System.out.println("Enter the name/keyword you wish search for or press enter to leave blank");
+                        scan.skip("\\R?");
+                        String searchkey = scan.nextLine();
+
+                        Investment stock = portfolio.checkInvestment(searchkey);
+                        if (stock != null && stock.getType().equals("stock")) {
+                            System.out.println("Here is your Stock:");
+                            System.out.println(stock.toString() + "\n");
+                        }
+                        Investment mutualfund = portfolio.checkInvestment(searchkey);
+                        if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
+                            System.out.println("Here is your Mutual Fund:");
+                            System.out.println(mutualfund.toString() + "\n");
+                        }
+                    }
+                } else if (optionch == 2) {
+                    System.out.println("Search using Hash Maps");
+                    ArrayList<Integer> value = new ArrayList<Integer>();
+                    if (portfolio.getInvestments() != null) { // prints mutual funds
+                        for (Investment investment : portfolio.getInvestments()) {
+                            String invname = investment.getName();
+                            String[] tokens = invname.split(" ");
+                            for (int i = 0; i < tokens.length; i++) {
+                                for (int j = 0; j < portfolio.getInvestments().size(); j++) {
+                                    String text = portfolio.getInvestments().get(j).getName();
+                                    if (text.contains(tokens[i])) {
+                                        value.add(j);
+                                    }
+                                }
+                                StringBuffer sb = new StringBuffer();
+
+                                for (int s : value) {
+                                    sb.append(s);
+                                    sb.append(" ");
+                                }
+                                String str = sb.toString();
+                                index.put(tokens[i].toLowerCase(), str);
+                                value.clear();
+                            }
+                        }
+                    }
+                    System.out.println("Enter the Keyword You wish to Search for");
                     scan.skip("\\R?");
-                    String searchSym = scan.nextLine();
-
-                    Investment stock = portfolio.checkInvestment(searchSym);
-                    if (stock != null && stock.getType().equals("stock")) {
-                        System.out.println("Here is your Stock:");
-                        System.out.println(stock.toString() + "\n");
+                    String keyw = scan.nextLine().toLowerCase();
+                    String[] keyar = keyw.split(" ");
+                    ArrayList<Integer> intlist = new ArrayList<>();
+                    for (int k = 0; k < keyar.length; k++) {
+                        String word = keyar[k];
+                        String listval = index.get(word);
+                        if (!(listval == null)) {
+                            String[] result = listval.split(" ");
+                            for (int p = 0; p < result.length; p++) {
+                                int pt = Integer.parseInt(result[p]);
+                                intlist.add(pt);
+                            }
+                        }
                     }
-                    Investment mutualfund = portfolio.checkInvestment(searchSym);
-                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
-                        System.out.println("Here is your Mutual Fund:");
-                        System.out.println(mutualfund.toString() + "\n");
+                    Set<Integer> ss = new LinkedHashSet<Integer>(intlist);
+                    Set<String> s = ss.stream().map(String::valueOf).collect(Collectors.toSet());
+                    String[] str1 = new String[s.size()];
+                    int x = 0;
+                    for (String str : s) {
+                        str1[x++] = str;
                     }
-                }
-
-                System.out.println("Do you wanna search using name? (Enter 1 for yes 2 for No)"); // using symbol
-                int option3 = scan.nextInt();
-                if (option3 == 1) {
-
-                    System.out.println("Enter the name/keyword you wish search for or press enter to leave blank");
-                    scan.skip("\\R?");
-                    String searchkey = scan.nextLine();
-
-                    Investment stock = portfolio.checkInvestment(searchkey);
-                    if (stock != null && stock.getType().equals("stock")) {
-                        System.out.println("Here is your Stock:");
-                        System.out.println(stock.toString() + "\n");
+                    if (s.size() <= 0) {
+                        System.out.println("No Results found for the keyword " + keyw + "\n");
+                    } else {
+                        System.out.println("Your Search results : ");
+                        for (int i = 0; i < s.size(); i++) {
+                            int pt = Integer.parseInt(str1[i]);
+                            for (int j = 0; j < portfolio.getInvestments().size(); j++) {
+                                if (pt == j) {
+                                    System.out.println(portfolio.getInvestments().get(j).toString());
+                                }
+                            }
+                        }
                     }
-                    Investment mutualfund = portfolio.checkInvestment(searchkey);
-                    if (mutualfund != null && mutualfund.getType().equals("mutualfund")) {
-                        System.out.println("Here is your Mutual Fund:");
-                        System.out.println(mutualfund.toString() + "\n");
-                    }
+                } else {
+                    System.out.println("Please enter a Valid Choice ( 1 or 2 )");
                 }
 
                 break;
@@ -288,7 +365,7 @@ public class EPortfolio {
                     }
                     for (int i = 0; i < Investmentsrecords.size(); i++) {
                         String st = Investmentsrecords.get(i);
-                        String[] data = st.split(" ");
+                        String[] data = st.split("-");
                         if (data[0].equals("stock")) {
                             Stock stockk = new Stock(data[1], data[2], Integer.parseInt(data[3]),
                                     Double.parseDouble(data[4]), "stock");

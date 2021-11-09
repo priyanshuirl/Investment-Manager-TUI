@@ -82,7 +82,7 @@ public class Investment {
     }
 
     public String toFileString() {
-        return type + " " + symbol + " " + name + " " + quantity + " " + price + " " + bookValue + " ";
+        return type + "-" + symbol + "-" + name + "-" + quantity + "-" + price + "-" + bookValue + " ";
     }
     public void add(Investment investment) {
     }

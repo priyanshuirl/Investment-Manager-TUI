@@ -1,1 +1,2 @@
-stock AAPL apple 77 6000.0 385006.05692913383 
+stock-TORBAN-Toronto Bank-100-119.02-11911.99 
+stock-THYUG-Bank of Toronto-300-34.0-10209.99 
