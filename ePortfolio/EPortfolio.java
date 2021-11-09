@@ -129,11 +129,13 @@ public class EPortfolio {
                             investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
                             if (investment != null) {
                                 sellMutualFund(investment);
+                                break;
                             }
                         } else if (investment.getType().equals("stock")) {
                             investment = portfolio.checkInvestment(symbol); // checks if mutaul fund exists
                             if (investment != null) {
                                 sellStock(investment); // sell stock using symbol
+                                break;
                             } else {
                                 System.out.println("\nUh oh! There is no such investment in your Portfolio.\n");
                             }
