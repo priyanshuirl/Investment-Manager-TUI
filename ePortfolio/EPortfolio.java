@@ -41,6 +41,9 @@ public class EPortfolio {
     private static Scanner scan;
     static String line;
 
+    final static double stockCommission = 9.99;
+    final static double mutualFundCommission = 45;
+
     public static void main(String[] args) {
         scan = new Scanner(System.in);
         portfolio = new PortfolioManager();
@@ -148,8 +151,12 @@ public class EPortfolio {
                         System.out.println(investmentupdate.toString());
                         System.out.println("Enter the updated price : \n");
                         double price = scan.nextDouble();
-                        investmentupdate.setOldPrice(investmentupdate.getPrice());
-                        investmentupdate.setPrice(price);
+                        if (price > 0) {
+                            investmentupdate.setOldPrice(investmentupdate.getPrice());
+                            investmentupdate.setPrice(price);
+                        } else {
+                            System.out.println("Price can't be Nagative or zero");
+                        }
                     }
                 }
                 if (portfolio.getInvestments() != null) { // prints stocks
@@ -181,7 +188,7 @@ public class EPortfolio {
                             double sellpricee = stock.getPrice();
                             double val = (sellqnt * sellpricee);
                             double val4 = stock.getBookValue();
-                            gainstock += val - val4 - 9.99;
+                            gainstock += val - val4 - stockCommission;
                         }
                     }
                     if (gainstock <= 0) {
@@ -373,8 +380,9 @@ public class EPortfolio {
                             stockk.name = data[2];
                             stockk.quantity = Integer.parseInt(data[3]);
                             stockk.price = Double.parseDouble(data[4]);
-                            double bv = Double.parseDouble(data[4]) * Integer.parseInt(data[3]) + 9.99;
-                            stockk.setBookValue((Double.parseDouble(data[4]) * Integer.parseInt(data[3])) + 9.99);
+                            double bv = Double.parseDouble(data[4]) * Integer.parseInt(data[3]) + stockCommission;
+                            stockk.setBookValue(
+                                    (Double.parseDouble(data[4]) * Integer.parseInt(data[3])) + stockCommission);
                             stockk.bookValue = bv;
                             portfolio.addInvestments(stockk);
                         } else if (data[0].equals("stock")) {
@@ -454,16 +462,24 @@ public class EPortfolio {
     private static void addstock(Investment investment) {
         System.out.print("Enter quantity of the Stocks\n");
         int squantity = scan.nextInt();
+        if (squantity > 0) {
 
-        System.out.print("Enter the price of each Stock\n");
-        double price = scan.nextDouble();
+            System.out.print("Enter the price of each Stock\n");
+            double price = scan.nextDouble();
+            if (price > 0) {
 
-        double bookValue = ((squantity * price) + 9.99) + investment.getBookValue();
-        investment.setQuantity(investment.getQuantity() + squantity);
-        investment.setBookValue(bookValue);
-        investment.setPrice(price);
+                double bookValue = ((squantity * price) + stockCommission) + investment.getBookValue();
+                investment.setQuantity(investment.getQuantity() + squantity);
+                investment.setBookValue(bookValue);
+                investment.setPrice(price);
 
-        System.out.println("Added " + squantity + " Stocks at " + price + " per stock\n");
+                System.out.println("Added " + squantity + " Stocks at " + price + " per stock\n");
+            } else {
+                System.out.println("Price can't be Negative or Zero");
+            }
+        } else {
+            System.out.println("Quanity can't be Negative or Zero");
+        }
     }
 
     /**
@@ -474,17 +490,23 @@ public class EPortfolio {
     private static void addMutualFunds(Investment investment) {
         System.out.print("Enter quantity of the Mutual Funds\n");
         int mfquantity = scan.nextInt();
+        if (mfquantity > 0) {
+            System.out.print("Enter the price of each Stock\n");
+            double price = scan.nextDouble();
+            if (price > 0) {
+                double bookValue = ((mfquantity * price) + investment.getBookValue());
+                int newQuantity = investment.getQuantity() + mfquantity;
+                investment.setPrice(price);
+                investment.setQuantity(newQuantity);
+                investment.setBookValue(bookValue);
 
-        System.out.print("Enter the price of each Stock\n");
-        double price = scan.nextDouble();
-
-        double bookValue = ((mfquantity * price) + investment.getBookValue());
-        int newQuantity = investment.getQuantity() + mfquantity;
-        investment.setPrice(price);
-        investment.setQuantity(newQuantity);
-        investment.setBookValue(bookValue);
-
-        System.out.println("Added " + mfquantity + " Mutual Fund units at " + price + " per unit\n");
+                System.out.println("Added " + mfquantity + " Mutual Fund units at " + price + " per unit\n");
+            } else {
+                System.out.println("Price can't be Negative or Zero");
+            }
+        } else {
+            System.out.println("Quanity can't be Negative or Zero");
+        }
     }
 
     /**
@@ -499,19 +521,27 @@ public class EPortfolio {
 
         System.out.print("Enter quantity of the Stocks\n");
         int qnt = scan.nextInt();
+        if (qnt > 0) {
 
-        System.out.print("Enter price of each stock\n");
-        double price = scan.nextDouble();
+            System.out.print("Enter price of each stock\n");
+            double price = scan.nextDouble();
+            if (price > 0) {
 
-        Stock stockk = new Stock(symbol, name, qnt, price, "stock");
-        stockk.symbol = symbol;
-        stockk.name = name;
-        stockk.quantity = qnt;
-        stockk.price = price;
-        double bv = price * qnt + 9.99;
-        stockk.setBookValue((price * qnt) + 9.99);
-        stockk.bookValue = bv;
-        portfolio.addInvestments(stockk);
+                Stock stockk = new Stock(symbol, name, qnt, price, "stock");
+                stockk.symbol = symbol;
+                stockk.name = name;
+                stockk.quantity = qnt;
+                stockk.price = price;
+                double bv = price * qnt + stockCommission;
+                stockk.setBookValue((price * qnt) + stockCommission);
+                stockk.bookValue = bv;
+                portfolio.addInvestments(stockk);
+            } else {
+                System.out.println("Price can't be Negative or Zero");
+            }
+        } else {
+            System.out.println("Quanity can't be Negative or Zero");
+        }
     }
 
     /**
@@ -525,11 +555,19 @@ public class EPortfolio {
         String name = scan.nextLine();
         System.out.print("Enter quantity of the Mutual Funds\n");
         int qnt = scan.nextInt();
-        System.out.print("Enter price of each Unit of Mutual Fund\n");
-        double price = scan.nextDouble();
-        MutualFund mutualFund = new MutualFund(symbol, name, qnt, price, "mutualfund");
-        mutualFund.setBookValue(price * qnt);
-        portfolio.addInvestments(mutualFund);
+        if (qnt > 0) {
+            System.out.print("Enter price of each Unit of Mutual Fund\n");
+            double price = scan.nextDouble();
+            if (price > 0) {
+                MutualFund mutualFund = new MutualFund(symbol, name, qnt, price, "mutualfund");
+                mutualFund.setBookValue(price * qnt);
+                portfolio.addInvestments(mutualFund);
+            } else {
+                System.out.println("Price can't be Negative or Zero");
+            }
+        } else {
+            System.out.println("Quanity can't be Negative or Zero");
+        }
     }
 
     /**
@@ -543,25 +581,33 @@ public class EPortfolio {
             stock.setOldPrice(stock.getPrice());
             System.out.println("Enter Price for which you wanna sell the Stock");
             double price = scan.nextDouble();
-            stock.setPrice(price);
-            System.out.println("Enter the Quantity of stock you wanna sell");
-            int quantity = scan.nextInt();
-            stock.sellqty(quantity);
-            if (quantity <= stock.getQuantity()) { // checking if we have sufficient stocks
-                int newQuantity = stock.getQuantity() - quantity;
-                if (newQuantity > 0) {
-                    double val1 = newQuantity;
-                    double val2 = stock.getQuantity();
-                    double bookValue = stock.getBookValue() - (stock.getBookValue() * (val1 / val2));
-                    stock.setBookValue(bookValue);
-                    stock.setQuantity(newQuantity);
+            if (price > 0) {
+                stock.setPrice(price);
+                System.out.println("Enter the Quantity of stock you wanna sell");
+                int quantity = scan.nextInt();
+                if (quantity > 0) {
+                    stock.sellqty(quantity);
+                    if (quantity <= stock.getQuantity()) { // checking if we have sufficient stocks
+                        int newQuantity = stock.getQuantity() - quantity;
+                        if (newQuantity > 0) {
+                            double val1 = newQuantity;
+                            double val2 = stock.getQuantity();
+                            double bookValue = stock.getBookValue() - (stock.getBookValue() * (val1 / val2));
+                            stock.setBookValue(bookValue);
+                            stock.setQuantity(newQuantity);
+                        } else {
+                            portfolio.getInvestments().remove(stock);
+                        }
+                        System.out.println("Successfully Sold the Stock!");
+                    } else {
+                        System.out.println("You don't have enough stocks to sell in your Portfolio!");
+                    }
                 } else {
-                    portfolio.getInvestments().remove(stock);
+                    System.out.println("Quanity can't be Negative or Zero");
                 }
-                System.out.println("Successfully Sold the Stock!");
-            } else {
-                System.out.println("You don't have enough stocks to sell in your Portfolio!");
             }
+        } else {
+            System.out.println("Price can't be Negative or Zero");
         }
     }
 
@@ -575,22 +621,29 @@ public class EPortfolio {
         if (mutualFund.getType().equals("mutualfund")) {
             System.out.println("Enter Price for which you wanna sell the Mutual Funds");
             double price = scan.nextDouble();
-            mutualFund.setPrice(price);
-            System.out.println("Enter the Quantity of Mutual Fund Units you wanna sell");
-            int quantity = scan.nextInt();
-
-            if (quantity <= mutualFund.getQuantity()) { // checking if there are sufficient funds
-                int newQuantity = mutualFund.getQuantity() - quantity;
-                if (newQuantity > 0) {
-                    double bookValue = mutualFund.getBookValue() * newQuantity / mutualFund.getQuantity();
-                    mutualFund.setBookValue(bookValue - 45);
-                    mutualFund.setQuantity(newQuantity);
+            if (price > 0) {
+                mutualFund.setPrice(price);
+                System.out.println("Enter the Quantity of Mutual Fund Units you wanna sell");
+                int quantity = scan.nextInt();
+                if (quantity > 0) {
+                    if (quantity <= mutualFund.getQuantity()) { // checking if there are sufficient funds
+                        int newQuantity = mutualFund.getQuantity() - quantity;
+                        if (newQuantity > 0) {
+                            double bookValue = mutualFund.getBookValue() * newQuantity / mutualFund.getQuantity();
+                            mutualFund.setBookValue(bookValue - mutualFundCommission);
+                            mutualFund.setQuantity(newQuantity);
+                        } else {
+                            portfolio.getInvestments().remove(mutualFund);
+                        }
+                        System.out.println("Successfully Sold the Mutual Funds!");
+                    } else {
+                        System.out.println("You don't have enough Mutual Funds to sell!");
+                    }
                 } else {
-                    portfolio.getInvestments().remove(mutualFund);
+                    System.out.println("Quanity can't be Negative or Zero");
                 }
-                System.out.println("Successfully Sold the Mutual Funds!");
             } else {
-                System.out.println("You don't have enough Mutual Funds to sell!");
+                System.out.println("Price can't be Negative or Zero");
             }
         }
     }

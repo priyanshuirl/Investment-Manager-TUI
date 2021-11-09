@@ -1,2 +1,3 @@
-stock-TORBAN-Toronto Bank-100-119.02-11911.99 
-stock-THYUG-Bank of Toronto-300-34.0-10209.99 
+stock-TORBAN-Toronto Bank-124-34.0-4225.99 
+stock-BANKTR-Bank of Toronto-2345-54.0-126639.99 
+stock-RBC-Royal Bank of Canada-4456-34.0-151513.99 
